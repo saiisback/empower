@@ -1,4 +1,4 @@
-# 🎮 Dynamic Educational Mini-Game Platform
+# 🎮  EMPOWER : Dynamic Educational Mini-Game Platform
 
 This project is a web-based platform that uses AI to generate educational mini-games for children, with a special focus on adapting the games to the child's age and specific disability needs. The application is built with a React/Next.js frontend and a Python/FastAPI backend.
 
