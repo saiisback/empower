@@ -42,7 +42,7 @@ Our platform is built on a modern, powerful, and scalable technology stack.
 The application follows a decoupled client-server architecture. The frontend is a pure presentation layer, while the backend handles all the heavy lifting of AI-driven game generation. The Coach Chat feature communicates directly with the Groq API from the client-side for real-time interaction. Voice capabilities are integrated throughout the interface for enhanced accessibility.
 
 ```mermaid
-graph TB
+graph TD
     subgraph "Frontend (Next.js)"
         A[User]
         E["Renders Game in iframe"]
