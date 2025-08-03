@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { getCoachResponse, ChatMessage } from "../chatbot/coach";
+import { TextToSpeechButton } from "./voice/TextToSpeechButton";
+import { SpeechToTextButton } from "./voice/SpeechToTextButton";
 
 interface CoachChatProps {
   subject: string;
@@ -79,8 +81,14 @@ const CoachChat: React.FC<CoachChatProps> = ({ subject, userDisability, age, use
   return (
     <div className="max-w-2xl mx-auto bg-black/40 backdrop-blur-lg rounded-2xl border border-purple-400/30 shadow-2xl flex flex-col h-[70vh]">
       <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 rounded-t-2xl text-center text-white shadow-lg">
-        <h2 className="text-2xl font-bold">🌟 Chat with Professor Sparkle! 🌟</h2>
-        <p className="text-sm text-purple-200">Your friendly learning coach for {subject}!</p>
+        <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
+          🌟 Chat with Professor Sparkle! 🌟
+          <TextToSpeechButton text="Chat with Professor Sparkle!" />
+        </h2>
+        <p className="text-sm text-purple-200 flex items-center justify-center gap-2">
+          Your friendly learning coach for {subject}!
+          <TextToSpeechButton text={`Your friendly learning coach for ${subject}!`} />
+        </p>
       </div>
 
       <div className="flex-1 p-6 overflow-y-auto space-y-6">
@@ -94,7 +102,12 @@ const CoachChat: React.FC<CoachChatProps> = ({ subject, userDisability, age, use
                   : "bg-white/90 text-gray-800 rounded-bl-none"
               }`}
             >
-              <p className="whitespace-pre-wrap">{msg.content}</p>
+              <div className="flex items-start gap-2">
+                <p className="whitespace-pre-wrap flex-1">{msg.content}</p>
+                {msg.role === "assistant" && (
+                  <TextToSpeechButton text={msg.content} className="flex-shrink-0" />
+                )}
+              </div>
             </div>
           </div>
         ))}
@@ -123,6 +136,10 @@ const CoachChat: React.FC<CoachChatProps> = ({ subject, userDisability, age, use
             placeholder="Ask about anything! ✨"
             className="flex-1 bg-transparent text-white placeholder-white/60 focus:outline-none px-4 py-2"
             disabled={isLoading}
+          />
+          <SpeechToTextButton
+            onTranscript={setInput}
+            className="mx-2"
           />
           <button
             onClick={handleSendMessage}

@@ -23,6 +23,7 @@ This project moves beyond static, one-size-fits-all educational content. By gene
 -   **Deep Personalization**: Content, complexity, and UI are tailored in real-time based on the child's age and disability, including visual, motor, and cognitive accommodations.
 -   **Stateful AI Orchestration**: Uses LangGraph to manage the multi-step process of game design, from concept generation to code creation, ensuring a robust and reliable workflow.
 -   **Sandboxed Game Environment**: Dynamically generated HTML, CSS, and JavaScript are rendered in a secure `<iframe>` on the frontend, ensuring safety and encapsulation.
+-   **AI-Powered Coaching**: A friendly AI coach, "Professor Sparkle," provides real-time, conversational support and encouragement using the high-speed Groq API.
 
 ## 🛠️ Tech Stack
 
@@ -32,32 +33,41 @@ Our platform is built on a modern, powerful, and scalable technology stack.
 | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Frontend** | ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white) ![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=next.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white) |
 | **Backend**  | ![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/-FastAPI-009688?logo=fastapi&logoColor=white) ![Uvicorn](https://img.shields.io/badge/-Uvicorn-ff9900?logo=python&logoColor=white) |
-| **AI/ML**    | ![OpenAI](https://img.shields.io/badge/-OpenAI-412991?logo=openai&logoColor=white) ![LangChain](https://img.shields.io/badge/-LangChain-8A2BE2) ![LangGraph](https://img.shields.io/badge/-LangGraph-f26522) |
+| **AI/ML**    | ![OpenAI](https://img.shields.io/badge/-OpenAI-412991?logo=openai&logoColor=white) ![LangChain](https://img.shields.io/badge/-LangChain-8A2BE2) ![LangGraph](https://img.shields.io/badge/-LangGraph-f26522) ![Groq](https://img.shields.io/badge/-Groq-F05A28?logo=groq&logoColor=white) |
 
 ## 🏛️ Architecture
 
-The application follows a decoupled client-server architecture. The frontend is a pure presentation layer, while the backend handles all the heavy lifting of AI-driven game generation.
+The application follows a decoupled client-server architecture. The frontend is a pure presentation layer, while the backend handles all the heavy lifting of AI-driven game generation. The Coach Chat feature communicates directly with the Groq API from the client-side for real-time interaction.
 
 ```mermaid
 graph TD
     subgraph "Frontend (Next.js)"
         A[User]
         E["Renders Game in iframe"]
+        F[/"Coach Chat (React Component)"/]
     end
 
     subgraph "Backend (FastAPI)"
-        B["API Endpoint"]
+        B["API Endpoint for Games"]
         C{"AI Orchestrator (LangGraph)"}
         D["OpenAI GPT-4o"]
     end
+    
+    subgraph "Third-Party Services"
+        G["Groq API (Llama 3)"]
+    end
 
-    A -->|"Step 1: Enters Topic (e.g., Photosynthesis)"| B;
+    A -->|"Step 1: Enters Topic & User Details"| B;
     B -->|"Step 2: Triggers LangGraph Workflow"| C;
-    C -->|"Step 3: Generates Detailed Prompt"| D;
+    C -->|"Step 3: Generates Detailed Prompt for Game"| D;
     D -->|"Step 4: Returns Full Game Object (JSON with HTML/CSS/JS)"| C;
     C -->|"Step 5: Parses & Validates Response"| B;
     B -->|"Step 6: Sends Game Object to Frontend"| A;
     A -->|"Step 7: Displays Instructions & Activates Iframe"| E;
+    
+    A -->|"User opens Coach Chat"| F;
+    F -->|"Sends user message + context"| G;
+    G -->|"Streams response back"| F;
 ```
 
 
@@ -69,13 +79,16 @@ graph TD
 ├── README.md           # This file
 ├── backend/
 │   ├── main.py         # FastAPI app, LangGraph workflow, and game generation logic
-│   ├── .env            # Environment variables (contains OPENAI_API_KEY)
+│   ├── .env            # Environment variables (contains OPENAI_API_KEY, GROQ_API_KEY)
 │   └── requirements.txt# Python dependencies
 └── frontend/
     ├── app/
     │   └── page.tsx    # Main page component
     ├── components/
-    │   └── GameComponent.tsx # The core React component for game interaction
+    │   ├── GameComponent.tsx # The core React component for game interaction
+    │   └── CoachChat.tsx # The component for the AI Coach
+    ├── chatbot/
+    │   └── coach.ts    # Logic for communicating with the Groq API
     ├── package.json    # Node.js dependencies
     └── ...
 ```
@@ -101,8 +114,9 @@ cd backend
 # 2. Install Python dependencies
 pip install -r requirements.txt
 
-# 3. Create a .env file and add your OpenAI API key
+# 3. Create a .env file and add your API keys
 echo "OPENAI_API_KEY='your_openai_api_key_here'" > .env
+echo "GROQ_API_KEY='your_groq_api_key_here'" >> .env
 
 # 4. Start the backend server
 uvicorn main:app --reload --host 0.0.0.0 --port 8000

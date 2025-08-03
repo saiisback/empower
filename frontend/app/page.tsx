@@ -5,6 +5,8 @@ import QuizComponent from "../components/QuizComponent";
 import LearningComponent from "../components/LearningComponent";
 import GameComponent from "../components/GameComponent";
 import CoachChat from "../components/CoachChat";
+import { TextToSpeechButton } from "../components/voice/TextToSpeechButton";
+import { SpeechToTextButton } from "../components/voice/SpeechToTextButton";
 
 interface UserData {
   name: string;
@@ -63,10 +65,11 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Magical Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 relative">
           <h1 className="text-5xl font-extrabold bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent mb-4">
             ✨ Professor Sparkle's Learning Academy ✨
           </h1>
+          <TextToSpeechButton text="Professor Sparkle's Learning Academy" className="absolute top-0 right-0" />
           <div className="flex justify-center items-center space-x-2">
             <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 to-pink-400 rounded"></div>
             <span className="text-2xl">🌟</span>
@@ -95,32 +98,42 @@ export default function Home() {
           <div className="bg-black/30 backdrop-blur-lg rounded-2xl border border-white/20 p-8 max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <div className="text-6xl mb-4 animate-bounce">🧙‍♂️</div>
-              <h2 className="text-3xl font-bold text-white mb-2">
+              <h2 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-2">
                 Create Your Learning Avatar!
+                <TextToSpeechButton text="Create Your Learning Avatar!" />
               </h2>
-              <p className="text-blue-200">
+              <p className="text-blue-200 flex items-center justify-center gap-2">
                 Tell Professor Sparkle about yourself to unlock magical
                 learning!
+                <TextToSpeechButton text="Tell Professor Sparkle about yourself to unlock magical learning!" />
               </p>
             </div>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-lg font-bold text-yellow-300 mb-2">
+                <label className="text-lg font-bold text-yellow-300 mb-2 flex items-center gap-2">
                   🌟 What's your magical name?
+                  <TextToSpeechButton text="What's your magical name?" />
                 </label>
-                <input
-                  type="text"
-                  value={userData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                  className="w-full p-4 bg-white/10 border-2 border-purple-400 rounded-xl focus:border-yellow-400 focus:outline-none text-white text-lg placeholder-white/50 backdrop-blur-sm"
-                  placeholder="Enter your magical name..."
-                />
+                <div className="relative flex items-center">
+                  <input
+                    type="text"
+                    value={userData.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
+                    className="w-full p-4 bg-white/10 border-2 border-purple-400 rounded-xl focus:border-yellow-400 focus:outline-none text-white text-lg placeholder-white/50 backdrop-blur-sm"
+                    placeholder="Say or type your magical name..."
+                  />
+                  <SpeechToTextButton
+                    onTranscript={(transcript) => handleInputChange("name", transcript)}
+                    className="absolute right-3"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-lg font-bold text-yellow-300 mb-2">
+                <label className="text-lg font-bold text-yellow-300 mb-2 flex items-center gap-2">
                   🎂 How many magical years old are you?
+                  <TextToSpeechButton text="How many magical years old are you?" />
                 </label>
                 <input
                   type="number"
@@ -135,8 +148,9 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-lg font-bold text-yellow-300 mb-2">
+                <label className="text-lg font-bold text-yellow-300 mb-2 flex items-center gap-2">
                   🦄 What makes your learning special?
+                  <TextToSpeechButton text="What makes your learning special?" />
                 </label>
                 <select
                   value={userData.disability}
@@ -161,9 +175,10 @@ export default function Home() {
               </div>
 
               <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-4 rounded-xl border border-blue-400/30">
-                <p className="text-blue-200 text-center">
+                <p className="text-blue-200 text-center flex items-center justify-center gap-2">
                   ✨ Every learner has unique superpowers! This helps me create
                   the perfect magical experience for you! ✨
+                  <TextToSpeechButton text="Every learner has unique superpowers! This helps me create the perfect magical experience for you!" />
                 </p>
               </div>
 
@@ -183,11 +198,13 @@ export default function Home() {
           <div className="bg-black/30 backdrop-blur-lg rounded-2xl border border-white/20 p-8 max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <div className="text-6xl mb-4">🌈</div>
-              <h2 className="text-3xl font-bold text-white mb-2">
+              <h2 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-2">
                 Choose Your Learning Portal!
+                <TextToSpeechButton text="Choose Your Learning Portal!" />
               </h2>
-              <p className="text-blue-200">
+              <p className="text-blue-200 flex items-center justify-center gap-2">
                 Hey {userData.name}! Which magical world do you want to explore?
+                <TextToSpeechButton text={`Hey ${userData.name}! Which magical world do you want to explore?`} />
               </p>
             </div>
 
@@ -197,7 +214,10 @@ export default function Home() {
                 className="bg-gradient-to-br from-cyan-400 to-blue-600 text-white p-8 rounded-2xl text-center hover:from-cyan-300 hover:to-blue-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-cyan-300/30"
               >
                 <div className="text-6xl mb-4">🔬</div>
-                <div className="text-2xl font-bold mb-2">Science Portal</div>
+                <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+                  Science Portal
+                  <TextToSpeechButton text="Science Portal. Discover amazing experiments and natural wonders!" />
+                </div>
                 <div className="text-cyan-100">
                   Discover amazing experiments & natural wonders!
                 </div>
@@ -208,7 +228,10 @@ export default function Home() {
                 className="bg-gradient-to-br from-amber-400 to-orange-600 text-white p-8 rounded-2xl text-center hover:from-amber-300 hover:to-orange-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-amber-300/30"
               >
                 <div className="text-6xl mb-4">🏛️</div>
-                <div className="text-2xl font-bold mb-2">History Portal</div>
+                <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+                  History Portal
+                  <TextToSpeechButton text="History Portal. Journey through epic adventures and ancient mysteries!" />
+                </div>
                 <div className="text-amber-100">
                   Journey through epic adventures & ancient mysteries!
                 </div>
@@ -229,22 +252,25 @@ export default function Home() {
           <div className="bg-black/30 backdrop-blur-lg rounded-2xl border border-white/20 p-8 max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <div className="text-6xl mb-4">⚔️</div>
-              <h2 className="text-3xl font-bold text-white mb-2">
+              <h2 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-2">
                 Choose Your Adventure!
+                <TextToSpeechButton text="Choose Your Adventure!" />
               </h2>
-              <p className="text-blue-200">
+              <p className="text-blue-200 flex items-center justify-center gap-2">
                 How do you want to explore {selectedSubject} today?
+                <TextToSpeechButton text={`How do you want to explore ${selectedSubject} today?`} />
               </p>
             </div>
 
-            <div className="space-y-6 grid grid-cols-2 gap-6 grid-rows-2">
+            <div className="space-y-6">
               <button
                 onClick={() => handleOptionSelect("explain")}
                 className="w-full bg-gradient-to-r from-emerald-400 to-green-600 text-white p-8 rounded-2xl hover:from-emerald-300 hover:to-green-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-emerald-300/30"
               >
                 <div className="text-5xl mb-4">📖</div>
-                <div className="text-2xl font-bold mb-2">
+                <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
                   🌟 Story & Discovery Mode
+                  <TextToSpeechButton text="Story & Discovery Mode. Explore magical topics with interactive stories and amazing facts!" />
                 </div>
                 <div className="text-emerald-100">
                   Explore magical topics with interactive stories and amazing
@@ -257,8 +283,9 @@ export default function Home() {
                 className="w-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white p-8 rounded-2xl hover:from-cyan-300 hover:to-blue-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-cyan-300/30"
               >
                 <div className="text-5xl mb-4">🎮</div>
-                <div className="text-2xl font-bold mb-2">
+                <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
                   🎪 Interactive Game Mode
+                  <TextToSpeechButton text="Interactive Game Mode. Learn through fun mini-games and interactive challenges!" />
                 </div>
                 <div className="text-cyan-100">
                   Learn through fun mini-games and interactive challenges!
@@ -270,8 +297,9 @@ export default function Home() {
                 className="w-full bg-gradient-to-r from-purple-400 to-pink-600 text-white p-8 rounded-2xl hover:from-purple-300 hover:to-pink-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-purple-300/30"
               >
                 <div className="text-5xl mb-4">🎯</div>
-                <div className="text-2xl font-bold mb-2">
+                <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
                   🏆 Challenge Quest Mode
+                  <TextToSpeechButton text="Challenge Quest Mode. Test your knowledge with fun challenges and earn magical rewards!" />
                 </div>
                 <div className="text-purple-100">
                   Test your knowledge with fun challenges and earn magical
@@ -284,8 +312,9 @@ export default function Home() {
                 className="w-full bg-gradient-to-r from-teal-400 to-cyan-600 text-white p-8 rounded-2xl hover:from-teal-300 hover:to-cyan-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-teal-300/30"
               >
                 <div className="text-5xl mb-4">💬</div>
-                <div className="text-2xl font-bold mb-2">
-                  🎓 Prof Chat Mode
+                <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+                  🎓 Coach Chat Mode
+                  <TextToSpeechButton text="Coach Chat Mode. Have a friendly chat with Professor Sparkle about any topic!" />
                 </div>
                 <div className="text-teal-100">
                   Have a friendly chat with Professor Sparkle about any topic!
@@ -318,7 +347,7 @@ export default function Home() {
                       : "💬"}
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">
+                    <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                       {selectedOption === "explain"
                         ? "✨ Discovery Mode"
                         : selectedOption === "game"
@@ -326,6 +355,15 @@ export default function Home() {
                         : selectedOption === "quiz"
                         ? "🎯 Challenge Quest"
                         : "🎓 Coach Chat"}
+                      <TextToSpeechButton text={
+                        selectedOption === "explain"
+                        ? "Discovery Mode"
+                        : selectedOption === "game"
+                        ? "Game Mode"
+                        : selectedOption === "quiz"
+                        ? "Challenge Quest"
+                        : "Coach Chat"
+                      } />
                     </h2>
                     <p className="text-blue-200">
                       {selectedSubject} Adventure

@@ -2,8 +2,9 @@
 import os
 import json
 import logging
+import tempfile
 from typing import Dict, Any, List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -12,9 +13,13 @@ from langchain.prompts import PromptTemplate
 from langgraph.graph import StateGraph, END
 from langgraph.graph.state import CompiledStateGraph
 from typing_extensions import TypedDict
+from groq import Groq
 
 # Load environment variables
 load_dotenv()
+
+# Initialize Groq client
+groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -252,6 +257,52 @@ async def explain_topic(request: LearningRequest):
     except Exception as e:
         logger.error(f"Error generating explanation: {str(e)}")
         raise HTTPException(status_code=500, detail="Explanation creation failed")
+
+
+@app.post("/transcribe")
+async def transcribe_audio(audio: UploadFile = File(...)):
+    """
+    Transcribe audio using Groq's Whisper API
+    """
+    try:
+        # Validate file type
+        if not audio.content_type.startswith('audio/'):
+            raise HTTPException(status_code=400, detail="File must be an audio file")
+        
+        # Create a temporary file to store the uploaded audio
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.webm') as temp_file:
+            content = await audio.read()
+            temp_file.write(content)
+            temp_file_path = temp_file.name
+        
+        try:
+            # Transcribe using Groq Whisper
+            with open(temp_file_path, 'rb') as audio_file:
+                transcription = groq_client.audio.transcriptions.create(
+                    file=audio_file,
+                    model="whisper-large-v3-turbo",
+                    prompt="This is speech from a child using an educational app. Please transcribe clearly.",
+                    response_format="json",
+                    language="en",
+                    temperature=0.0,
+                )
+            
+            # Clean up temporary file
+            os.unlink(temp_file_path)
+            
+            logger.info(f"🎤 Audio transcribed successfully: {transcription.text}")
+            return {"transcript": transcription.text}
+            
+        except Exception as groq_error:
+            # Clean up temporary file on error
+            if os.path.exists(temp_file_path):
+                os.unlink(temp_file_path)
+            logger.error(f"Groq transcription error: {str(groq_error)}")
+            raise HTTPException(status_code=500, detail="Transcription failed")
+            
+    except Exception as e:
+        logger.error(f"Error in transcribe endpoint: {str(e)}")
+        raise HTTPException(status_code=500, detail="Audio processing failed")
 
 
 @app.get("/")
