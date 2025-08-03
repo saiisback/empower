@@ -42,47 +42,53 @@ Our platform is built on a modern, powerful, and scalable technology stack.
 The application follows a decoupled client-server architecture. The frontend is a pure presentation layer, while the backend handles all the heavy lifting of AI-driven game generation. The Coach Chat feature communicates directly with the Groq API from the client-side for real-time interaction. Voice capabilities are integrated throughout the interface for enhanced accessibility.
 
 ```mermaid
-graph TB
-    subgraph "Frontend (Next.js)"
+flowchart TD
+    %% Frontend block at the top
+    subgraph FRONTEND [Frontend (Next.js)]
         A[User]
         E["Renders Game in iframe"]
-        F[/"Coach Chat (React Component)"/]
-        H[/"Text-to-Speech Engine"/]
-        I[/"Speech-to-Text Recorder"/]
+        F["Coach Chat (React Component)"]
+        H["Text-to-Speech Engine"]
+        I["Speech-to-Text Recorder"]
     end
 
-    subgraph "Backend (FastAPI)"
+    %% Backend block below frontend
+    subgraph BACKEND [Backend (FastAPI)]
         B["API Endpoint for Games"]
-        C{"AI Orchestrator (LangGraph)"}
+        C{{"AI Orchestrator (LangGraph)"}}
         D["OpenAI GPT-4o"]
         J["/transcribe Endpoint"]
     end
-    
-    subgraph "Third-Party Services"
+
+    %% Third-party services at the bottom
+    subgraph THIRD_PARTY [Third-Party Services]
         G["Groq API (Llama 3 + Whisper)"]
     end
 
-    A -->|"Step 1: Enters Topic & User Details"| B;
-    B -->|"Step 2: Triggers LangGraph Workflow"| C;
-    C -->|"Step 3: Generates Detailed Prompt for Game"| D;
-    D -->|"Step 4: Returns Full Game Object (JSON with HTML/CSS/JS)"| C;
-    C -->|"Step 5: Parses & Validates Response"| B;
-    B -->|"Step 6: Sends Game Object to Frontend"| A;
-    A -->|"Step 7: Displays Instructions & Activates Iframe"| E;
-    
-    A -->|"User opens Coach Chat"| F;
-    F -->|"Sends user message + context"| G;
-    G -->|"Streams response back"| F;
-    
-    A -->|"Clicks TTS button"| H;
-    H -->|"Reads text aloud using Web Speech API"| A;
-    
-    A -->|"Records voice input"| I;
-    I -->|"Sends audio file"| J;
-    J -->|"Transcribes with Groq Whisper"| G;
-    G -->|"Returns transcript"| J;
-    J -->|"Sends transcript to frontend"| I;
-    I -->|"Populates text fields"| A;
+    %% Main game generation flow
+    A -->|"Step 1: Enters Topic & User Details"| B
+    B -->|"Step 2: Triggers LangGraph Workflow"| C
+    C -->|"Step 3: Generates Detailed Prompt for Game"| D
+    D -->|"Step 4: Returns Full Game Object (JSON with HTML/CSS/JS)"| C
+    C -->|"Step 5: Parses & Validates Response"| B
+    B -->|"Step 6: Sends Game Object to Frontend"| A
+    A -->|"Step 7: Displays Instructions & Activates Iframe"| E
+
+    %% Coach chat flow
+    A -->|"User opens Coach Chat"| F
+    F -->|"Sends user message + context"| G
+    G -->|"Streams response back"| F
+
+    %% Voice accessibility flows
+    A -->|"Clicks TTS button"| H
+    H -->|"Reads text aloud using Web Speech API"| A
+
+    A -->|"Records voice input"| I
+    I -->|"Sends audio file"| J
+    J -->|"Transcribes with Groq Whisper"| G
+    G -->|"Returns transcript"| J
+    J -->|"Sends transcript to frontend"| I
+    I -->|"Populates text fields"| A
 ```
 
 
