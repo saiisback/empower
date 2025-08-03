@@ -43,29 +43,25 @@ The application follows a decoupled client-server architecture. The frontend is 
 
 ```mermaid
 graph TD
-    subgraph "Frontend (Next.js)"
-        A[User]
-        E["Renders Game in iframe"]
-        F[/"Coach Chat (React Component)"/]
-        H[/"Text-to-Speech Engine"/]
-        I[/"Speech-to-Text Recorder"/]
-    end
+    %% Node Definitions with integrated context
+    A["User (Frontend)"]
+    E["Renders Game in iframe (Frontend)"]
+    F[/"Coach Chat (Frontend)"/]
+    H[/"Text-to-Speech Engine (Frontend)"/]
+    I[/"Speech-to-Text Recorder (Frontend)"/]
 
-    subgraph "Backend (FastAPI)"
-        B["API Endpoint for Games"]
-        C{"AI Orchestrator (LangGraph)"}
-        D["OpenAI GPT-4o"]
-        J["/transcribe Endpoint"]
-    end
+    B["API Endpoint for Games (Backend)"]
+    C{"AI Orchestrator (LangGraph) (Backend)"}
+    D["OpenAI GPT-4o (Backend)"]
+    J["/transcribe Endpoint (Backend)"]
     
-    subgraph "Third-Party Services"
-        G["Groq API (Llama 3 + Whisper)"]
-    end
+    G["Groq API (Third-Party)"]
 
+    %% Connections
     A -->|"Step 1: Enters Topic & User Details"| B;
     B -->|"Step 2: Triggers LangGraph Workflow"| C;
     C -->|"Step 3: Generates Detailed Prompt for Game"| D;
-    D -->|"Step 4: Returns Full Game Object (JSON with HTML/CSS/JS)"| C;
+    D -->|"Step 4: Returns Full Game Object"| C;
     C -->|"Step 5: Parses & Validates Response"| B;
     B -->|"Step 6: Sends Game Object to Frontend"| A;
     A -->|"Step 7: Displays Instructions & Activates Iframe"| E;
