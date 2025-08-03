@@ -24,6 +24,7 @@ This project moves beyond static, one-size-fits-all educational content. By gene
 -   **Stateful AI Orchestration**: Uses LangGraph to manage the multi-step process of game design, from concept generation to code creation, ensuring a robust and reliable workflow.
 -   **Sandboxed Game Environment**: Dynamically generated HTML, CSS, and JavaScript are rendered in a secure `<iframe>` on the frontend, ensuring safety and encapsulation.
 -   **AI-Powered Coaching**: A friendly AI coach, "Professor Sparkle," provides real-time, conversational support and encouragement using the high-speed Groq API.
+-   **Advanced Voice Integration**: Complete voice accessibility with Groq Whisper-powered speech-to-text and browser-native text-to-speech, enabling hands-free interaction for enhanced accessibility.
 
 ## 🛠️ Tech Stack
 
@@ -34,10 +35,11 @@ Our platform is built on a modern, powerful, and scalable technology stack.
 | **Frontend** | ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white) ![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=next.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white) |
 | **Backend**  | ![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/-FastAPI-009688?logo=fastapi&logoColor=white) ![Uvicorn](https://img.shields.io/badge/-Uvicorn-ff9900?logo=python&logoColor=white) |
 | **AI/ML**    | ![OpenAI](https://img.shields.io/badge/-OpenAI-412991?logo=openai&logoColor=white) ![LangChain](https://img.shields.io/badge/-LangChain-8A2BE2) ![LangGraph](https://img.shields.io/badge/-LangGraph-f26522) ![Groq](https://img.shields.io/badge/-Groq-F05A28?logo=groq&logoColor=white) |
+| **Voice Tech** | ![Groq Whisper](https://img.shields.io/badge/-Groq_Whisper-F05A28?logo=groq&logoColor=white) ![Web Speech API](https://img.shields.io/badge/-Web_Speech_API-4285F4?logo=google-chrome&logoColor=white) ![MediaRecorder API](https://img.shields.io/badge/-MediaRecorder_API-FF9500?logo=javascript&logoColor=white) |
 
 ## 🏛️ Architecture
 
-The application follows a decoupled client-server architecture. The frontend is a pure presentation layer, while the backend handles all the heavy lifting of AI-driven game generation. The Coach Chat feature communicates directly with the Groq API from the client-side for real-time interaction.
+The application follows a decoupled client-server architecture. The frontend is a pure presentation layer, while the backend handles all the heavy lifting of AI-driven game generation. The Coach Chat feature communicates directly with the Groq API from the client-side for real-time interaction. Voice capabilities are integrated throughout the interface for enhanced accessibility.
 
 ```mermaid
 graph TD
@@ -45,16 +47,19 @@ graph TD
         A[User]
         E["Renders Game in iframe"]
         F[/"Coach Chat (React Component)"/]
+        H[/"Text-to-Speech Engine"/]
+        I[/"Speech-to-Text Recorder"/]
     end
 
     subgraph "Backend (FastAPI)"
         B["API Endpoint for Games"]
         C{"AI Orchestrator (LangGraph)"}
         D["OpenAI GPT-4o"]
+        J["/transcribe Endpoint"]
     end
     
     subgraph "Third-Party Services"
-        G["Groq API (Llama 3)"]
+        G["Groq API (Llama 3 + Whisper)"]
     end
 
     A -->|"Step 1: Enters Topic & User Details"| B;
@@ -68,6 +73,16 @@ graph TD
     A -->|"User opens Coach Chat"| F;
     F -->|"Sends user message + context"| G;
     G -->|"Streams response back"| F;
+    
+    A -->|"Clicks TTS button"| H;
+    H -->|"Reads text aloud using Web Speech API"| A;
+    
+    A -->|"Records voice input"| I;
+    I -->|"Sends audio file"| J;
+    J -->|"Transcribes with Groq Whisper"| G;
+    G -->|"Returns transcript"| J;
+    J -->|"Sends transcript to frontend"| I;
+    I -->|"Populates text fields"| A;
 ```
 
 
@@ -86,7 +101,13 @@ graph TD
     │   └── page.tsx    # Main page component
     ├── components/
     │   ├── GameComponent.tsx # The core React component for game interaction
-    │   └── CoachChat.tsx # The component for the AI Coach
+    │   ├── CoachChat.tsx # The component for the AI Coach
+    │   └── voice/        # Voice interaction components
+    │       ├── TextToSpeechButton.tsx # Text-to-speech button component
+    │       └── SpeechToTextButton.tsx # Speech-to-text button component
+    ├── hooks/
+    │   ├── useTextToSpeech.ts # Hook for text-to-speech functionality
+    │   └── useSpeechToText.ts # Hook for speech-to-text functionality
     ├── chatbot/
     │   └── coach.ts    # Logic for communicating with the Groq API
     ├── package.json    # Node.js dependencies
@@ -158,6 +179,11 @@ The magic of this platform lies in its dynamic, AI-driven workflow:
 5.  **Frontend Display**:
     -   The backend sends the complete game object, including the `htmlCode`, back to the frontend.
     -   The React app displays the game's title and instructions, and then renders the `htmlCode` within a sandboxed `<iframe>` to create a safe and isolated play area.
+
+6.  **Voice Accessibility Features**:
+    -   **Text-to-Speech**: Users can click speaker buttons throughout the interface to have any text read aloud using the browser's native Web Speech API.
+    -   **Speech-to-Text**: Users can click microphone buttons to provide voice input. Audio is captured using the MediaRecorder API, sent to the backend `/transcribe` endpoint, and processed using Groq's Whisper API for highly accurate transcription.
+    -   **Fallback Support**: If Groq transcription fails, the system automatically falls back to the browser's Speech Recognition API to ensure continuous functionality.
 
 ## 🔧 Customization
 
