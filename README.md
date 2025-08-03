@@ -40,15 +40,26 @@ The application follows a decoupled client-server architecture. The frontend is 
 
 ```mermaid
 graph TD
-    A[User on Next.js Frontend] -->|1. Enters Topic (e.g., "Photosynthesis")| B(FastAPI Backend);
-    B -->|2. Triggers LangGraph Workflow| C{AI Orchestrator (LangGraph)};
-    C -->|3. Generates Detailed Prompt| D[OpenAI GPT-4o];
-    D -->|4. Returns Game Design (JSON)| C;
-    C -->|5. Formats Output| B;
-    B -->|6. Generates Full HTML/CSS/JS| B;
-    B -->|7. Sends Game Object to Frontend| A;
-    A -->|8. Renders Game in Iframe| A;
+    subgraph "Frontend (Next.js)"
+        A[User]
+        E["Renders Game in iframe"]
+    end
+
+    subgraph "Backend (FastAPI)"
+        B["API Endpoint"]
+        C{"AI Orchestrator (LangGraph)"}
+        D["OpenAI GPT-4o"]
+    end
+
+    A -->|"Step 1: Enters Topic (e.g., Photosynthesis)"| B;
+    B -->|"Step 2: Triggers LangGraph Workflow"| C;
+    C -->|"Step 3: Generates Detailed Prompt"| D;
+    D -->|"Step 4: Returns Full Game Object (JSON with HTML/CSS/JS)"| C;
+    C -->|"Step 5: Parses & Validates Response"| B;
+    B -->|"Step 6: Sends Game Object to Frontend"| A;
+    A -->|"Step 7: Displays Instructions & Activates Iframe"| E;
 ```
+
 
 ## 📂 Project Structure
 
