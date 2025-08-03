@@ -4,6 +4,7 @@ import { useState } from "react";
 import QuizComponent from "../components/QuizComponent";
 import LearningComponent from "../components/LearningComponent";
 import GameComponent from "../components/GameComponent";
+import CoachChat from "../components/CoachChat";
 
 interface UserData {
   name: string;
@@ -23,7 +24,7 @@ export default function Home() {
 
   const disabilities = [
     "ADHD",
-    "Dyslexia", 
+    "Dyslexia",
     "Autism Spectrum Disorder",
     "Hearing Impairment",
     "Visual Impairment",
@@ -61,7 +62,6 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-4">
       <div className="max-w-6xl mx-auto">
-        
         {/* Magical Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-extrabold bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent mb-4">
@@ -79,11 +79,14 @@ export default function Home() {
           <div className="bg-black/20 rounded-full p-1 mb-8 backdrop-blur-sm">
             <div className="flex items-center justify-between text-white/80 text-sm px-4 py-2">
               <span>🎯 Quest Progress</span>
-              <span>{step}/4</span>
+              <span>
+                {step}/4
+              </span>
             </div>
-            <div className="bg-gradient-to-r from-yellow-400 to-pink-400 h-2 rounded-full" 
-                 style={{width: `${(step/4) * 100}%`}}>
-            </div>
+            <div
+              className="bg-gradient-to-r from-yellow-400 to-pink-400 h-2 rounded-full"
+              style={{ width: `${(step / 4) * 100}%` }}
+            ></div>
           </div>
         )}
 
@@ -92,10 +95,15 @@ export default function Home() {
           <div className="bg-black/30 backdrop-blur-lg rounded-2xl border border-white/20 p-8 max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <div className="text-6xl mb-4 animate-bounce">🧙‍♂️</div>
-              <h2 className="text-3xl font-bold text-white mb-2">Create Your Learning Avatar!</h2>
-              <p className="text-blue-200">Tell Professor Sparkle about yourself to unlock magical learning!</p>
+              <h2 className="text-3xl font-bold text-white mb-2">
+                Create Your Learning Avatar!
+              </h2>
+              <p className="text-blue-200">
+                Tell Professor Sparkle about yourself to unlock magical
+                learning!
+              </p>
             </div>
-            
+
             <div className="space-y-6">
               <div>
                 <label className="block text-lg font-bold text-yellow-300 mb-2">
@@ -117,7 +125,9 @@ export default function Home() {
                 <input
                   type="number"
                   value={userData.age}
-                  onChange={(e) => handleInputChange("age", parseInt(e.target.value, 10))}
+                  onChange={(e) =>
+                    handleInputChange("age", parseInt(e.target.value, 10))
+                  }
                   className="w-full p-4 bg-white/10 border-2 border-purple-400 rounded-xl focus:border-yellow-400 focus:outline-none text-white text-lg backdrop-blur-sm"
                   min="1"
                   max="18"
@@ -130,12 +140,20 @@ export default function Home() {
                 </label>
                 <select
                   value={userData.disability}
-                  onChange={(e) => handleInputChange("disability", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("disability", e.target.value)
+                  }
                   className="w-full p-4 bg-white/10 border-2 border-purple-400 rounded-xl focus:border-yellow-400 focus:outline-none text-white text-lg backdrop-blur-sm"
                 >
-                  <option value="" className="text-gray-800">Choose your superpower...</option>
+                  <option value="" className="text-gray-800">
+                    Choose your superpower...
+                  </option>
                   {disabilities.map((disability) => (
-                    <option key={disability} value={disability} className="text-gray-800">
+                    <option
+                      key={disability}
+                      value={disability}
+                      className="text-gray-800"
+                    >
                       {disability}
                     </option>
                   ))}
@@ -144,7 +162,8 @@ export default function Home() {
 
               <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-4 rounded-xl border border-blue-400/30">
                 <p className="text-blue-200 text-center">
-                  ✨ Every learner has unique superpowers! This helps me create the perfect magical experience for you! ✨
+                  ✨ Every learner has unique superpowers! This helps me create
+                  the perfect magical experience for you! ✨
                 </p>
               </div>
 
@@ -164,10 +183,14 @@ export default function Home() {
           <div className="bg-black/30 backdrop-blur-lg rounded-2xl border border-white/20 p-8 max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <div className="text-6xl mb-4">🌈</div>
-              <h2 className="text-3xl font-bold text-white mb-2">Choose Your Learning Portal!</h2>
-              <p className="text-blue-200">Hey {userData.name}! Which magical world do you want to explore?</p>
+              <h2 className="text-3xl font-bold text-white mb-2">
+                Choose Your Learning Portal!
+              </h2>
+              <p className="text-blue-200">
+                Hey {userData.name}! Which magical world do you want to explore?
+              </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <button
                 onClick={() => handleSubjectSelect("Science")}
@@ -175,7 +198,9 @@ export default function Home() {
               >
                 <div className="text-6xl mb-4">🔬</div>
                 <div className="text-2xl font-bold mb-2">Science Portal</div>
-                <div className="text-cyan-100">Discover amazing experiments & natural wonders!</div>
+                <div className="text-cyan-100">
+                  Discover amazing experiments & natural wonders!
+                </div>
               </button>
 
               <button
@@ -184,7 +209,9 @@ export default function Home() {
               >
                 <div className="text-6xl mb-4">🏛️</div>
                 <div className="text-2xl font-bold mb-2">History Portal</div>
-                <div className="text-amber-100">Journey through epic adventures & ancient mysteries!</div>
+                <div className="text-amber-100">
+                  Journey through epic adventures & ancient mysteries!
+                </div>
               </button>
             </div>
 
@@ -202,36 +229,67 @@ export default function Home() {
           <div className="bg-black/30 backdrop-blur-lg rounded-2xl border border-white/20 p-8 max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <div className="text-6xl mb-4">⚔️</div>
-              <h2 className="text-3xl font-bold text-white mb-2">Choose Your Adventure!</h2>
-              <p className="text-blue-200">How do you want to explore {selectedSubject} today?</p>
+              <h2 className="text-3xl font-bold text-white mb-2">
+                Choose Your Adventure!
+              </h2>
+              <p className="text-blue-200">
+                How do you want to explore {selectedSubject} today?
+              </p>
             </div>
-            
-            <div className="space-y-6">
+
+            <div className="space-y-6 grid grid-cols-2 gap-6 grid-rows-2">
               <button
                 onClick={() => handleOptionSelect("explain")}
                 className="w-full bg-gradient-to-r from-emerald-400 to-green-600 text-white p-8 rounded-2xl hover:from-emerald-300 hover:to-green-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-emerald-300/30"
               >
                 <div className="text-5xl mb-4">📖</div>
-                <div className="text-2xl font-bold mb-2">🌟 Story & Discovery Mode</div>
-                <div className="text-emerald-100">Explore magical topics with interactive stories and amazing facts!</div>
+                <div className="text-2xl font-bold mb-2">
+                  🌟 Story & Discovery Mode
+                </div>
+                <div className="text-emerald-100">
+                  Explore magical topics with interactive stories and amazing
+                  facts!
+                </div>
               </button>
-              
+
               <button
                 onClick={() => handleOptionSelect("game")}
                 className="w-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white p-8 rounded-2xl hover:from-cyan-300 hover:to-blue-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-cyan-300/30"
               >
                 <div className="text-5xl mb-4">🎮</div>
-                <div className="text-2xl font-bold mb-2">🎪 Interactive Game Mode</div>
-                <div className="text-cyan-100">Learn through fun mini-games and interactive challenges!</div>
+                <div className="text-2xl font-bold mb-2">
+                  🎪 Interactive Game Mode
+                </div>
+                <div className="text-cyan-100">
+                  Learn through fun mini-games and interactive challenges!
+                </div>
               </button>
-              
+
               <button
                 onClick={() => handleOptionSelect("quiz")}
                 className="w-full bg-gradient-to-r from-purple-400 to-pink-600 text-white p-8 rounded-2xl hover:from-purple-300 hover:to-pink-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-purple-300/30"
               >
                 <div className="text-5xl mb-4">🎯</div>
-                <div className="text-2xl font-bold mb-2">🏆 Challenge Quest Mode</div>
-                <div className="text-purple-100">Test your knowledge with fun challenges and earn magical rewards!</div>
+                <div className="text-2xl font-bold mb-2">
+                  🏆 Challenge Quest Mode
+                </div>
+                <div className="text-purple-100">
+                  Test your knowledge with fun challenges and earn magical
+                  rewards!
+                </div>
+              </button>
+
+              <button
+                onClick={() => handleOptionSelect("coach")}
+                className="w-full bg-gradient-to-r from-teal-400 to-cyan-600 text-white p-8 rounded-2xl hover:from-teal-300 hover:to-cyan-500 transform hover:scale-105 transition-all duration-300 shadow-xl border border-teal-300/30"
+              >
+                <div className="text-5xl mb-4">💬</div>
+                <div className="text-2xl font-bold mb-2">
+                  🎓 Prof Chat Mode
+                </div>
+                <div className="text-teal-100">
+                  Have a friendly chat with Professor Sparkle about any topic!
+                </div>
               </button>
             </div>
 
@@ -251,13 +309,27 @@ export default function Home() {
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-4">
                   <div className="text-3xl">
-                    {selectedOption === "explain" ? "📖" : selectedOption === "game" ? "�" : "�🎯"}
+                    {selectedOption === "explain"
+                      ? "📖"
+                      : selectedOption === "game"
+                      ? "🎮"
+                      : selectedOption === "quiz"
+                      ? "🎯"
+                      : "💬"}
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-white">
-                      {selectedOption === "explain" ? "✨ Discovery Mode" : selectedOption === "game" ? "🎮 Game Mode" : "🎯 Challenge Quest"}
+                      {selectedOption === "explain"
+                        ? "✨ Discovery Mode"
+                        : selectedOption === "game"
+                        ? "🎮 Game Mode"
+                        : selectedOption === "quiz"
+                        ? "🎯 Challenge Quest"
+                        : "🎓 Coach Chat"}
                     </h2>
-                    <p className="text-blue-200">{selectedSubject} Adventure</p>
+                    <p className="text-blue-200">
+                      {selectedSubject} Adventure
+                    </p>
                   </div>
                 </div>
                 <div className="flex space-x-3">
@@ -278,26 +350,35 @@ export default function Home() {
             </div>
 
             {selectedOption === "explain" && (
-              <LearningComponent 
-                subject={selectedSubject} 
+              <LearningComponent
+                subject={selectedSubject}
                 userDisability={userData.disability}
                 age={userData.age}
               />
             )}
 
             {selectedOption === "game" && (
-              <GameComponent 
-                subject={selectedSubject} 
+              <GameComponent
+                subject={selectedSubject}
                 userDisability={userData.disability}
                 age={userData.age}
               />
             )}
 
             {selectedOption === "quiz" && (
-              <QuizComponent 
-                subject={selectedSubject} 
+              <QuizComponent
+                subject={selectedSubject}
                 userDisability={userData.disability}
                 age={userData.age}
+              />
+            )}
+
+            {selectedOption === "coach" && (
+              <CoachChat
+                subject={selectedSubject}
+                userDisability={userData.disability}
+                age={userData.age}
+                userName={userData.name}
               />
             )}
           </div>
