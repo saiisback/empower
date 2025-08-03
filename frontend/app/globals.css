@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+/* Accessibility improvements for specially abled kids */
+button:focus,
+input:focus,
+select:focus {
+  outline: 3px solid #7c3aed;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bg-gradient-to-br {
+    background: #ffffff !important;
+  }
+  
+  .bg-white {
+    border: 2px solid #000000;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .transform,
+  .transition-all,
+  .hover\:scale {
+    transform: none !important;
+    transition: none !important;
+  }
+}
