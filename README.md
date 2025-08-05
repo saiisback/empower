@@ -55,6 +55,7 @@ graph TD
     D["OpenAI GPT-4o (Backend)"]
     J["/transcribe Endpoint (Backend)"]
     
+    S["SLM CLEANUP (Backend)"]
     G["Groq API (Third-Party)"]
 
     %% Connections
@@ -67,7 +68,8 @@ graph TD
     A -->|"Step 7: Displays Instructions & Activates Iframe"| E;
     
     A -->|"User opens Coach Chat"| F;
-    F -->|"Sends user message + context"| G;
+    F -->|"Sends user message + context"| S;
+    S -->|"Processes message and context"| G;
     G -->|"Streams response back"| F;
     
     A -->|"Clicks TTS button"| H;

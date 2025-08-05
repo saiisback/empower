@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import QuizComponent from "../components/QuizComponent";
 import LearningComponent from "../components/LearningComponent";
 import GameComponent from "../components/GameComponent";
 import CoachChat from "../components/CoachChat";
+import KidChatGPTComponent from "../components/KidChatgpt";
 import { TextToSpeechButton } from "../components/voice/TextToSpeechButton";
 import { SpeechToTextButton } from "../components/voice/SpeechToTextButton";
 
@@ -273,8 +275,7 @@ export default function Home() {
                   <TextToSpeechButton text="Story & Discovery Mode. Explore magical topics with interactive stories and amazing facts!" />
                 </div>
                 <div className="text-emerald-100">
-                  Explore magical topics with interactive stories and amazing
-                  facts!
+                  Explore magical topics with interactive stories and amazing facts!
                 </div>
               </button>
 
@@ -302,8 +303,7 @@ export default function Home() {
                   <TextToSpeechButton text="Challenge Quest Mode. Test your knowledge with fun challenges and earn magical rewards!" />
                 </div>
                 <div className="text-purple-100">
-                  Test your knowledge with fun challenges and earn magical
-                  rewards!
+                  Test your knowledge with fun challenges and earn magical rewards!
                 </div>
               </button>
 
@@ -318,6 +318,20 @@ export default function Home() {
                 </div>
                 <div className="text-teal-100">
                   Have a friendly chat with Professor Sparkle about any topic!
+                </div>
+              </button>
+
+              <button
+                onClick={() => handleOptionSelect("kidchat")}
+                className="w-full bg-gradient-to-r from-pink-400 to-yellow-400 text-white p-8 rounded-2xl hover:from-pink-300 hover:to-yellow-300 transform hover:scale-105 transition-all duration-300 shadow-xl border border-pink-300/30"
+              >
+                <div className="text-5xl mb-4">🤖</div>
+                <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+                  🧒 Kid ChatGPT Mode
+                  <TextToSpeechButton text="Kid ChatGPT Mode. Chat with a friendly AI designed just for kids!" />
+                </div>
+                <div className="text-pink-100">
+                  Chat with a friendly AI designed just for kids!
                 </div>
               </button>
             </div>
@@ -419,6 +433,7 @@ export default function Home() {
                 userName={userData.name}
               />
             )}
+
           </div>
         )}
       </div>
