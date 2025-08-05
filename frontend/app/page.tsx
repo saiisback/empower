@@ -321,19 +321,7 @@ export default function Home() {
                 </div>
               </button>
 
-              <button
-                onClick={() => handleOptionSelect("kidchat")}
-                className="w-full bg-gradient-to-r from-pink-400 to-yellow-400 text-white p-8 rounded-2xl hover:from-pink-300 hover:to-yellow-300 transform hover:scale-105 transition-all duration-300 shadow-xl border border-pink-300/30"
-              >
-                <div className="text-5xl mb-4">🤖</div>
-                <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
-                  🧒 Kid ChatGPT Mode
-                  <TextToSpeechButton text="Kid ChatGPT Mode. Chat with a friendly AI designed just for kids!" />
-                </div>
-                <div className="text-pink-100">
-                  Chat with a friendly AI designed just for kids!
-                </div>
-              </button>
+          
             </div>
 
             <button
